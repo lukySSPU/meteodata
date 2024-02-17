@@ -59,12 +59,16 @@ elif option == 3:
         print(f"Pro zadaný měsíc nejsou k dispozici žádné statistiky.")
 
 elif option == 4:
-    start_year = int(input("Zadejte začáteční rok analýzy: "))
-    end_year = int(input("Zadejte koncový rok analýzy: "))
+    while True:
+        start_year = temperature_analytics.input_year_value()
+        end_year = temperature_analytics.input_year_value()
+        if start_year < end_year:
+            break
     temperature_analytics.plot_annual_temperature_averages(start_year, end_year)
 
 elif option == 5:
     pass
+    #tohle už nechávám tobě Víťo
 
 else:
     print("Neplatná volba. Ukončuji program.")

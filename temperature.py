@@ -49,3 +49,64 @@ class TemperatureAnalytics:
         plt.ylabel('Průměrná teplota (°C)')
         plt.grid(True)
         plt.show()
+
+    def input_year_value(self):
+        available_years = self.get_available_years()
+        while True:
+            user_input_year = int(input("Zadejte rok mezi 1775 - 2022: "))
+            if user_input_year in available_years:
+                break
+        return user_input_year
+    
+    def input_month_value(self):
+        while True:
+            user_input_month = int(input("Zadejte měsíc: "))
+            if user_input_month < 12 or user_input_month > 1:
+                break
+        return user_input_month
+    
+    def get_all_monthly_statistics(self, year):
+        yearly_data = self.data[self.data['rok'] == year]
+        monthly_statistics = []
+
+        for month in range(1, 13):
+            monthly_data = yearly_data[yearly_data['měsíc'] == month]
+            average_temp = monthly_data['T-AVG'].mean()
+            max_temp = monthly_data['TMA'].max()
+            date_of_max_temp = monthly_data[monthly_data['TMA'] == max_temp][['rok', 'měsíc', 'den']].iloc[0]
+            min_temp = monthly_data['TMI'].min()
+            date_of_min_temp = monthly_data[monthly_data['TMI'] == min_temp][['rok', 'měsíc', 'den']].iloc[0]
+
+            monthly_statistics.append({
+                'měsíc': month,
+                'průměrná teplota': average_temp,
+                'maximální teplota': max_temp,
+                'datum max teploty': f"{date_of_max_temp['den']}.{date_of_max_temp['měsíc']}.{date_of_max_temp['rok']}",
+                'minimální teplota': min_temp,
+                'datum min teploty': f"{date_of_min_temp['den']}.{date_of_min_temp['měsíc']}.{date_of_min_temp['rok']}",
+            })
+
+        return monthly_statistics
+    
+    def get_all_monthly_statistics(self, year):
+        monthly_averages = self.get_monthly_averages(year)
+        monthly_statistics = []
+
+        for month, average_temp in monthly_averages.items():
+            monthly_data = self.data[(self.data['rok'] == year) & (self.data['měsíc'] == month)]
+            if not monthly_data.empty:
+                max_temp = monthly_data['TMA'].max()
+                date_of_max_temp = monthly_data.loc[monthly_data['TMA'].idxmax()][['rok', 'měsíc', 'den']]
+                min_temp = monthly_data['TMI'].min()
+                date_of_min_temp = monthly_data.loc[monthly_data['TMI'].idxmin()][['rok', 'měsíc', 'den']]
+
+                monthly_statistics.append({
+                    'měsíc': month,
+                    'průměrná teplota': average_temp,
+                    'maximální teplota': max_temp,
+                    'datum max teploty': f"{date_of_max_temp['den']}.{date_of_max_temp['měsíc']}.{date_of_max_temp['rok']}",
+                    'minimální teplota': min_temp,
+                    'datum min teploty': f"{date_of_min_temp['den']}.{date_of_min_temp['měsíc']}.{date_of_min_temp['rok']}",
+                })
+        
+        return monthly_statistics

@@ -11,6 +11,9 @@ class TemperatureAnalytics:
     def __init__(self, data):
         self.data = data
 
+    def get_available_years(self):
+        return self.data['rok'].unique()
+
     def get_average_temperature(self, year):
         yearly_data = self.data[self.data['rok'] == year]
         return yearly_data['T-AVG'].mean()

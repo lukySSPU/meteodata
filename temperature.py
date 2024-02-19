@@ -183,7 +183,7 @@ class TemperatureAnalytics:
         if not yearly_data.empty:
             monthly_data = yearly_data[yearly_data['měsíc'] == month]
             for index, day in monthly_data.iterrows():
-                if 'TMA' in day and 'TMI' in day:  # Kontrola, zda jsou k dispozici hodnoty pro 'TMA' a 'TMI'
+                if 'TMA' in day and 'TMI' in day:
                     temp_max = day['TMA']
                     temp_min = day['TMI']
                     daily_statistics[index] = {

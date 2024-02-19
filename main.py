@@ -71,21 +71,35 @@ elif option == 4:
             break
     temperature_analytics.plot_annual_temperature_averages(start_year, end_year)
 
-elif option == 5:
-    pass
-    #tohle už nechávám tobě Víťo
-
-elif option == 6:
-    pass
-    
-elif option == 7:
-    temperature_analytics.plot_annual_temperature_averages(1775,2022)
-    
-elif option == 8:
-    user_input_year = temperature_analytics.input_year_value()
-    user_input_month = temperature_analytics.input_month_value()
-    daily_statistics = temperature_analytics.get_all_daily_statistics(user_input_year,user_input_month)
-    temperature_analytics.plot_daily_temperatures(daily_statistics)
+    elif option == 5:
+        user_input_year = temperature_analytics.input_year_value()
+        monthly_statistics = temperature_analytics.get_all_monthly_statistics(user_input_year)
+        jaro = 0
+        leto = 0
+        podzim = 0
+        zima = 0
+        for month_stat in monthly_statistics:
+            if month_stat['měsíc'] < 4 and month_stat['měsíc'] > 0:
+                jaro += month_stat['průměrná teplota']
+            elif month_stat['měsíc'] > 3 and month_stat['měsíc'] < 7:
+                leto += month_stat['průměrná teplota']
+            elif month_stat['měsíc'] > 6 and month_stat['měsíc'] < 10:
+                podzim += month_stat['průměrná teplota']                
+            elif month_stat['měsíc'] > 9 and month_stat['měsíc'] < 13:
+                zima += month_stat['průměrná teplota']
+        print(f"Průměrná teplota ročních období v roce {user_input_year} je:\nJaro: {jaro/3:.2f}\nLéto: {leto/3:.2f}\nPodzim: {podzim/3:.2f}\nZima: {zima/3:.2f}")
+    elif option == 6:
+        user_input_year = temperature_analytics.input_year_value()
+        temperature_analytics.plot_temperature_anomalies(user_input_year)
+        
+    elif option == 7:
+        temperature_analytics.plot_annual_temperature_averages(1775,2022)
+        
+    elif option == 8:
+        user_input_year = temperature_analytics.input_year_value()
+        user_input_month = temperature_analytics.input_month_value()
+        daily_statistics = temperature_analytics.get_all_daily_statistics(user_input_year,user_input_month)
+        temperature_analytics.plot_daily_temperatures(daily_statistics)
 
 
 
@@ -97,5 +111,6 @@ elif option == 9:
     temperature_analytics.plot_day_temperatures(day_statistics, user_input_day)
     
 
-else:
-    print("Neplatná volba. Ukončuji program.")
+    else:
+        print("Neplatná volba. Ukončuji program.")
+        break

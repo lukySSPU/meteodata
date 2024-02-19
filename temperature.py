@@ -93,6 +93,22 @@ class TemperatureAnalytics:
                 plt.grid(True)
                 plt.show()
 
+    def plot_temperature_anomalies(self, year):
+        monthly_averages = self.get_monthly_averages(year)
+        long_term_average = monthly_averages.mean()
+        anomalies = monthly_averages - long_term_average
+
+        plt.figure(figsize=(10, 6))
+        anomalies.plot(kind='bar', color='orange')
+        plt.title(f'Teplotní anomálie pro rok {year}')
+        plt.xlabel('Měsíc')
+        plt.ylabel('Odchylka teploty (°C)')
+        plt.axhline(0, color='black', linewidth=0.5)
+        plt.grid(True)
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.show()
+
     def input_year_value(self):
         available_years = self.get_available_years()
         while True:
@@ -167,7 +183,7 @@ class TemperatureAnalytics:
         if not yearly_data.empty:
             monthly_data = yearly_data[yearly_data['měsíc'] == month]
             for index, day in monthly_data.iterrows():
-                if 'TMA' in day and 'TMI' in day:  # Kontrola, zda jsou k dispozici hodnoty pro 'TMA' a 'TMI'
+                if 'TMA' in day and 'TMI' in day:
                     temp_max = day['TMA']
                     temp_min = day['TMI']
                     daily_statistics[index] = {

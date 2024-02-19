@@ -12,7 +12,12 @@ print("1. Průměrné, max a min teploty v roce")
 print("2. Průměrné, max a min teploty všech měsíců v roce")
 print("3. Průměrné, max a min teploty v zadaném měsíci v roce")
 print("4. Analyzovat teplotní trendy")
-print("5. Detekovat teplotní anomálie")
+print("5. Analyzovat sezónní změny")
+print("6. Detekovat teplotní anomálie")
+print("7. Vykreslit průměrné roční teploty")
+print("8. Vykreslit denní teplotní trendy")
+print("9. Vykreslit minimální a maximální teploty pro konkrétní den")
+
 
 option = int(input("Zadejte číslo možnosti: "))
 
@@ -69,6 +74,28 @@ elif option == 4:
 elif option == 5:
     pass
     #tohle už nechávám tobě Víťo
+
+elif option == 6:
+    pass
+    
+elif option == 7:
+    temperature_analytics.plot_annual_temperature_averages(1775,2022)
+    
+elif option == 8:
+    user_input_year = temperature_analytics.input_year_value()
+    user_input_month = temperature_analytics.input_month_value()
+    daily_statistics = temperature_analytics.get_all_daily_statistics(user_input_year,user_input_month)
+    temperature_analytics.plot_daily_temperatures(daily_statistics)
+
+
+
+elif option == 9:
+    user_input_year = temperature_analytics.input_year_value()
+    user_input_month = temperature_analytics.input_month_value()
+    user_input_day = temperature_analytics.input_day_value()
+    day_statistics = temperature_analytics.get_all_daily_statistics(user_input_year,user_input_month)
+    temperature_analytics.plot_day_temperatures(day_statistics, user_input_day)
+    
 
 else:
     print("Neplatná volba. Ukončuji program.")

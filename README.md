@@ -45,6 +45,10 @@ Meteodata Analysis is a Python project designed for temperature analytics based 
    - 2: Monthly temperature statistics
    - 3: Monthly statistics for a specific month in a year
    - 4: Analyze temperature trends
-   - 5: Detect temperature anomalies
+   - 5: Analyze seasonal changes
+   - 6: Detect temperature anomalies
+   - 7: Plot average annual temperatures
+   - 8: Plot daily temperature trends
+   - 9: Plot minimum and maximum temperatures for a specific day
 
 3. Follow the prompts and input necessary information.

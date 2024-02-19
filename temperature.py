@@ -18,6 +18,10 @@ class TemperatureAnalytics:
         yearly_data = self.data[self.data['rok'] == year]
         return yearly_data['T-AVG'].mean()
 
+    def get_daily_temperature(self, day):
+        daily_data = self.data[self.data['den'] == day]
+        return daily_data['T-AVG']
+
     def get_max_temperature(self, year):
         yearly_data = self.data[self.data['rok'] == year]
         max_temp = yearly_data['TMA'].max()
@@ -50,6 +54,45 @@ class TemperatureAnalytics:
         plt.grid(True)
         plt.show()
 
+    def plot_daily_temperatures(self, day_statistics):
+        days = []
+        min_temps = []
+        max_temps = []
+
+        for index in day_statistics:
+            days.append(day_statistics[index]['den'])
+            min_temps.append(day_statistics[index]['minimální teplota'])
+            max_temps.append(day_statistics[index]['maximální teplota'])
+
+
+        plt.figure(figsize=(10, 6))
+        plt.plot(days, min_temps, label='Minimální teplota', color='blue', marker='o')
+        plt.plot(days, max_temps, label='Maximální teplota', color='red', marker='o')
+        plt.xlabel('Den')
+        plt.ylabel('Teplota (°C)')
+        plt.title('Minimální a maximální teploty')
+        plt.legend()
+        plt.grid(True)
+        plt.xticks(days)
+        plt.tight_layout()
+        plt.show()
+
+    def plot_day_temperatures(self, daily_statistics, den):
+        pom = 0
+        for index, data in daily_statistics.items():
+            pom = pom+1
+            day = index
+            min_temp = data['minimální teplota']
+            max_temp = data['maximální teplota']
+            if pom == den:
+                plt.figure(figsize=(8, 5))
+                plt.plot(['Min', 'Max'], [min_temp, max_temp], marker='o')
+                plt.title(f"Teplotní trendy pro {pom}.{data['měsíc']}.{data['rok']}")
+                plt.xlabel('Teplota')
+                plt.ylabel('Teplota (°C)')
+                plt.grid(True)
+                plt.show()
+
     def input_year_value(self):
         available_years = self.get_available_years()
         while True:
@@ -64,6 +107,13 @@ class TemperatureAnalytics:
             if user_input_month < 12 or user_input_month > 1:
                 break
         return user_input_month
+
+    def input_day_value(self):
+        while True:
+            user_input_day = int(input("Zadejte den: "))
+            if user_input_day < 31 or user_input_day > 1:
+                break
+        return user_input_day
     
     def get_all_monthly_statistics(self, year):
         yearly_data = self.data[self.data['rok'] == year]
@@ -110,3 +160,25 @@ class TemperatureAnalytics:
                 })
         
         return monthly_statistics
+
+    def get_all_daily_statistics(self, year, month):
+        yearly_data = self.data[self.data['rok'] == year]
+        daily_statistics = {}
+        if not yearly_data.empty:
+            monthly_data = yearly_data[yearly_data['měsíc'] == month]
+            for index, day in monthly_data.iterrows():
+                if 'TMA' in day and 'TMI' in day:  # Kontrola, zda jsou k dispozici hodnoty pro 'TMA' a 'TMI'
+                    temp_max = day['TMA']
+                    temp_min = day['TMI']
+                    daily_statistics[index] = {
+                        'den': day['den'],
+                        'měsíc': day['měsíc'],
+                        'rok': day['rok'],
+                        'minimální teplota': temp_min,
+                        'maximální teplota': temp_max
+                    }
+
+        return daily_statistics
+
+
+
